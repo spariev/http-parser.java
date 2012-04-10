@@ -1,5 +1,6 @@
 package http_parser.lolevel;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import http_parser.HTTPException;
 import http_parser.HTTPMethod;
@@ -1643,19 +1644,33 @@ return error(settings, "unhandled state", data);
   int strtoi(ByteBuffer data, int start_pos) {
     data.position(start_pos);
     byte ch;
-    String str = "";
+    int start = data.position();
+    int end = data.limit();
     while(data.position() < data.limit()) {
       ch = data.get();
       if(Character.isWhitespace((char)ch)){
+        start++;
         continue;
       }
       if(isDigit(ch)){
-        str = str + (char)ch; //TODO replace with something less hacky
+        continue;
       }else{
+        end = data.position() - 1;
         break;
       }
     }
-    return Integer.parseInt(str);
+    byte[] s = new byte[end - start];
+    int cur_pos = data.position();
+    data.position(start);
+    data.get(s);
+    int result = 0;
+    try{
+      result = Integer.parseInt(new String(s, "UTF8"));
+    } catch (UnsupportedEncodingException e) {
+      result = 0;
+    }
+    data.position(cur_pos);
+    return result;
   }
   
   boolean isDigit(byte b) {
