@@ -377,12 +377,9 @@ public class  HTTPParser {
             settings.call_on_message_begin(this);
           } else {
             type   = ParserType.HTTP_REQUEST;
-            method = start_req_method_assign(ch);     
-            if (null == method) {
-              return error(settings, "invalid method", data);
-            }
-            index  = 1;
-            state  = State.req_method;
+            state  = State.start_req;
+            index = 1;
+            reexecute = true;
           }
           break;
 
