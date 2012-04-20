@@ -27,7 +27,7 @@ public class ParserSettings extends http_parser.lolevel.ParserSettings {
   private HTTPDataCallback  _on_fragment;
   private HTTPDataCallback  _on_header_field;
   private HTTPDataCallback  _on_header_value;
-  private HTTPCallback      _on_headers_complete;
+  private HTTPHeadersCompleteCallback      _on_headers_complete;
   private HTTPDataCallback  _on_body;
   private HTTPCallback      _on_message_complete;
   private HTTPErrorCallback _on_error;
@@ -175,7 +175,7 @@ public class ParserSettings extends http_parser.lolevel.ParserSettings {
         return 0;
       }
     };
-    this._on_headers_complete = new HTTPCallback() {
+    this._on_headers_complete = new HTTPHeadersCompleteCallback() {
       @Override
       public int cb(HTTPParser parser) {
         // is there an uncompleted value ... ?

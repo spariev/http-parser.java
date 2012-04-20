@@ -10,7 +10,7 @@ public class ParserSettings {
   public HTTPDataCallback 	on_fragment;
   public HTTPDataCallback 	on_header_field;
   public HTTPDataCallback 	on_header_value;
-  public HTTPCallback       on_headers_complete;
+  public HTTPHeadersCompleteCallback      on_headers_complete;
   public HTTPDataCallback 	on_body;
   public HTTPCallback       on_message_complete;
   public HTTPErrorCallback  on_error;

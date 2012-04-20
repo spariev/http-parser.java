@@ -1218,7 +1218,7 @@ return error(settings, "Content-Length not numeric", data);
           /* Here we call the headers_complete callback. This is somewhat
           * different than other callbacks because if the user returns 1, we
           * will interpret that as saying that this message has no body. This
-          * is needed for the annoying case of recieving a response to a HEAD
+          * is needed for the annoying case of receiving a response to a HEAD
           * request.
           */
 
@@ -1236,27 +1236,27 @@ return error(settings, "Content-Length not numeric", data);
           * parsingHeader) implementation ...
           */
 
-          /*TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO */
-          if (null != settings.on_headers_complete) {
-            settings.call_on_headers_complete(this);
-            //return;
-          }
+//          /*TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO */
+//          if (null != settings.on_headers_complete) {
+//            settings.call_on_headers_complete(this);
+//            //return;
+//          }
 
-          //        if (null != settings.on_headers_complete) {
-          //          switch (settings.on_headers_complete.cb(parser)) {
-          //            case 0:
-          //              break;
-          //
-          //            case 1:
-          //              flags |= F_SKIPBODY;
-          //              break;
-          //
-          //            default:
-          //              return p - data; /* Error */ // TODO // RuntimeException ?
-          //          }
-          //        }
-          reexecute = true;
-          break;
+        if (null != settings.on_headers_complete) {
+          switch (settings.on_headers_complete.cb(this)) {
+            case 0:
+              break;
+
+            case 1:
+              flags |= F_SKIPBODY;
+              break;
+
+            default:
+              return error(settings, "HPE_CB_headers_complete", data); /* Error */
+          }
+        }
+        reexecute = true;
+        break;
 
         case headers_done:
           if (strict && (LF != ch)) {
@@ -1316,6 +1316,7 @@ return error(settings, "Content-Length not numeric", data);
 
             if (content_length == 0) {
               state = message_done;
+              p += to_read;
               reexecute = true;
             }
           }

@@ -228,7 +228,7 @@ public class Message {
         return 0;
       }
     };
-    s.on_headers_complete = new HTTPCallback() {
+    s.on_headers_complete = new HTTPHeadersCompleteCallback() {
       public int cb (HTTPParser p) {
         headers_complete_called = true;
         String parsed_path  = null;
