@@ -35,10 +35,6 @@ public class ParserSettings {
       on_error.cb(p, mes, buf, ini_pos);
       return;
     }
-    // if on_error gets called it MUST throw an exception, else the parser 
-    // will attempt to continue parsing, which it can't because it's
-    // in an invalid state.
-    throw new HTTPException(mes);
 	}
 
 	void call_on_header_field (HTTPParser p, ByteBuffer buf, int pos, int len) {
